@@ -16,8 +16,6 @@ If you are using MinIO locally, treat that as a development or compatibility sub
 
 - Docker Engine or Docker Desktop
 - Docker Compose v2
-- A PostgreSQL database reachable from the container
-- A Redis instance reachable from the container
 - An external S3-compatible bucket plus access keys
 - A TLS certificate and private key for the IMAP endpoint
 - A random `ENCRYPTION_MASTER_KEY` with at least 32 bytes of entropy
