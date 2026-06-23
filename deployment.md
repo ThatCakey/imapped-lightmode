@@ -94,7 +94,7 @@ docker compose -f docker-compose.prod.yml run --rm imap-cache add-account \
 Notes:
 
 - The container listens on 1143 and 1993 internally by default. Port mapping exposes standard IMAP ports on the host.
-- The data volume holds the local object store cache and Tantivy index. Keep it persistent.
+- The data volume holds the search index and other runtime data. Keep it persistent.
 - The compose file is intentionally small and expects the S3-compatible object store to be provided externally.
 
 ## Build The Image
@@ -136,7 +136,7 @@ After startup, confirm:
 
 - Keep `ENCRYPTION_MASTER_KEY` stable across restarts.
 - Back up PostgreSQL regularly. It is the canonical state for accounts, mailboxes, mappings, sync checkpoints, and mutation queues.
-- Keep the object store volume or R2 bucket durable. Raw RFC822 blobs and MIME content rely on it.
+- Keep the external object store durable. Raw RFC822 blobs and MIME content rely on it.
 - Monitor the HTTP metrics endpoint if you enable it.
 - Prefer reverse proxy or firewall rules in front of any admin or HTTP endpoints.
 - Expose only the ports you actually need.
