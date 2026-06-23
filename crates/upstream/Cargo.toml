@@ -1,0 +1,12 @@
+[package]
+name = "imap-cache-upstream"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+imap-cache-core = { path = "../core" }
+base64 = "0.22"
+chrono = { version = "0.4", features = ["serde"] }
+tokio = { version = "1", features = ["full"] }
+tokio-rustls = "0.26"
+webpki-roots = "0.26"

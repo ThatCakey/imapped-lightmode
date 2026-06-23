@@ -1,0 +1,10 @@
+[package]
+name = "imap-cache-config"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+imap-cache-core = { path = "../core" }
+imap-cache-storage = { path = "../storage" }
+serde = { version = "1", features = ["derive"] }
+toml = "0.8"

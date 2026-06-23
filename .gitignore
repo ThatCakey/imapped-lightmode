@@ -1,0 +1,7 @@
+.env
+.testing-credentials
+
+
+# Added by cargo
+
+/target

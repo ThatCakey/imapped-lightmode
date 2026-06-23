@@ -1,0 +1,11 @@
+[package]
+name = "imap-cache-coordination"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+imap-cache-core = { path = "../core" }
+async-trait = "0.1"
+redis = { version = "0.25", features = ["aio", "tokio-comp"] }
+tokio = { version = "1", features = ["full"] }
+uuid = { version = "1", features = ["v4"] }

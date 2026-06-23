@@ -1,0 +1,67 @@
+[package]
+name = "imap-cache-rs"
+version = "0.1.0"
+edition = "2024"
+
+[workspace]
+members = [".", "crates/auth", "crates/core", "crates/config", "crates/coordination", "crates/db", "crates/imap-server", "crates/metrics", "crates/mime", "crates/notifications", "crates/search", "crates/storage", "crates/protocol", "crates/sync", "crates/test-support", "crates/upstream"]
+
+[lib]
+name = "imap_cache_rs"
+path = "src/lib.rs"
+
+[[bin]]
+name = "imap-cache-rs"
+path = "src/main.rs"
+
+[dependencies]
+imap-cache-core = { path = "crates/core" }
+imap-cache-auth = { path = "crates/auth" }
+imap-cache-config = { path = "crates/config" }
+imap-cache-coordination = { path = "crates/coordination" }
+imap-cache-db = { path = "crates/db" }
+imap-cache-imap-server = { path = "crates/imap-server" }
+imap-cache-metrics = { path = "crates/metrics" }
+imap-cache-mime = { path = "crates/mime" }
+imap-cache-notifications = { path = "crates/notifications" }
+imap-cache-search = { path = "crates/search" }
+imap-cache-storage = { path = "crates/storage" }
+imap-cache-protocol = { path = "crates/protocol" }
+imap-cache-upstream = { path = "crates/upstream" }
+imap-cache-sync = { path = "crates/sync" }
+anyhow = "1"
+async-trait = "0.1"
+aws-config = "1"
+aws-credential-types = "1"
+aws-sdk-s3 = "1"
+argon2 = "0.5"
+base64 = "0.22"
+bytes = "1"
+chrono = { version = "0.4", features = ["serde"] }
+clap = { version = "4", features = ["derive"] }
+chacha20poly1305 = "0.10"
+futures = "0.3"
+hex = "0.4"
+mailparse = "0.15"
+rand = "0.8"
+redis = { version = "0.25", features = ["aio", "tokio-comp"] }
+rustls = "0.23"
+rustls-pemfile = "2"
+tantivy = "0.22"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+sqlx = { version = "0.8", features = ["runtime-tokio-rustls", "postgres", "chrono", "json", "uuid", "macros"] }
+thiserror = "2"
+tokio = { version = "1", features = ["full"] }
+tokio-rustls = "0.26"
+toml = "0.8"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt", "json"] }
+webpki-roots = "0.26"
+uuid = { version = "1", features = ["serde", "v4"] }
+
+[dev-dependencies]
+imap-cache-test-support = { path = "crates/test-support" }
+rcgen = "0.13"
+tempfile = "3"
