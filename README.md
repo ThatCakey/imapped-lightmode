@@ -74,7 +74,7 @@ make down
 
 See [Production Docker Deployment](./deployment.md) for the recommended production setup, including:
 
-- Building or pulling the service image.
+- Pulling the service image published to GHCR by the release workflow.
 - Running the app in Docker with persistent volumes via [`docker-compose.prod.yml`](./docker-compose.prod.yml).
 - Bundling PostgreSQL and Redis in Compose while pointing the app at an external S3-compatible object store.
 - Mounting TLS certificates for IMAP STARTTLS and implicit TLS.

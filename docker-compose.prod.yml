@@ -1,9 +1,6 @@
 services:
   imap-cache:
-    image: ghcr.io/your-org/imap-cache-rs:latest
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ghcr.io/esaiaswestberg/imapped:latest
     restart: unless-stopped
     depends_on:
       postgres:

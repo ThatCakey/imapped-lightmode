@@ -22,7 +22,9 @@ If you are using MinIO locally, treat that as a development or compatibility sub
 
 ## Recommended Deployment Model
 
-Use the official image or a locally built image, then supply configuration through environment variables or a mounted config file.
+The release workflow publishes the Docker image to `ghcr.io/esaiaswestberg/imapped` with both the release tag and `latest`. Production Compose should pull `latest`; use a tag-specific image if you want to pin a deployment to a particular release.
+
+You can still build a local image for development or custom deployment scenarios, but that is not required for the standard production path.
 
 The application reads configuration from:
 
@@ -59,7 +61,7 @@ For production, you should also consider enabling:
 
 ## Example Compose File
 
-The repository includes [`docker-compose.prod.yml`](./docker-compose.prod.yml). It provisions PostgreSQL and Redis locally, while the object store remains external and S3-compatible.
+The repository includes [`docker-compose.prod.yml`](./docker-compose.prod.yml). It pulls `ghcr.io/esaiaswestberg/imapped:latest`, provisions PostgreSQL and Redis locally, and leaves the object store external and S3-compatible.
 
 Start it with:
 
@@ -97,13 +99,15 @@ Notes:
 
 ## Build The Image
 
+This is optional and mainly useful for local testing or custom image inspection.
+
 Build locally:
 
 ```bash
 docker build -t imap-cache-rs:latest .
 ```
 
-If you publish the image to a registry, use that image name in the compose file.
+If you want to pin to a release tag or a custom registry, update the `image:` value in [`docker-compose.prod.yml`](./docker-compose.prod.yml) accordingly.
 
 ## Run Migrations
 
