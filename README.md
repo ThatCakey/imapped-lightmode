@@ -1,6 +1,6 @@
-# imap-cache-rs
+# imap-cache-rs-lightmode
 
-`imap-cache-rs` is a Rust IMAP caching proxy and mirror service.
+`imap-cache-rs-lightmode` is a Rust IMAP caching proxy and mirror service.
 
 It sits between downstream mail clients and one or more upstream IMAP servers. The server mirrors mailboxes into local storage, serves cached bodies and metadata locally, indexes parsed message content for search, and pushes local mutations back upstream when required.
 
