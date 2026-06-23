@@ -32,7 +32,7 @@ The repository is organized as a Rust workspace so the production boundaries are
 The service can be deployed in two common shapes:
 
 - Local development: Docker Compose with PostgreSQL, Redis, MinIO-compatible object storage, and optionally Dovecot as the upstream IMAP server.
-- Production: a Dockerized application container with external PostgreSQL, Redis, Cloudflare R2, and mounted TLS certificates.
+- Production: Docker Compose with the app, PostgreSQL, and Redis services, plus an external S3-compatible object store and mounted TLS certificates.
 
 The code paths are the same in both cases. Only the backing services change.
 
@@ -67,7 +67,7 @@ It emits tagged and untagged responses directly and only advertises capabilities
 The production Docker deployment should keep these boundaries in mind:
 
 - PostgreSQL is the source of truth for metadata and sync state.
-- R2 or another durable S3-compatible object store holds the blob data.
+- An external durable S3-compatible object store holds the blob data.
 - Redis is shared state for coordination and fanout, not a replacement for PostgreSQL.
 - TLS material should be mounted into the container rather than baked into the image.
 

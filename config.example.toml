@@ -1,5 +1,5 @@
 # Example configuration for local development.
-# For production Docker deployments, set APP_ENV=production and mount real TLS, database, Redis, and R2 credentials.
+# For production Docker deployments, set APP_ENV=production and mount real TLS, database, Redis, and S3-compatible object store credentials.
 app_env = "development"
 app_base_url = "http://localhost:8080"
 log_level = "debug"

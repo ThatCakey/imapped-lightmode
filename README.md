@@ -10,7 +10,7 @@ It sits between downstream mail clients and one or more upstream IMAP servers. T
 - An upstream IMAP client with TLS, STARTTLS, and capability detection.
 - A sync engine that mirrors messages, reconciles flags, and replays queued mutations.
 - PostgreSQL-backed canonical metadata and sync state.
-- Cloudflare R2-compatible object storage support, plus filesystem and in-memory backends for development and tests.
+- External S3-compatible object storage support, plus filesystem and in-memory backends for development and tests.
 - Tantivy-backed full-text search.
 - Redis-backed coordination and event fanout hooks.
 - Admin CLI commands for user, account, sync, and cache management.
@@ -76,7 +76,7 @@ See [Production Docker Deployment](./deployment.md) for the recommended producti
 
 - Building or pulling the service image.
 - Running the app in Docker with persistent volumes via [`docker-compose.prod.yml`](./docker-compose.prod.yml).
-- Connecting to PostgreSQL, Redis, and Cloudflare R2.
+- Bundling PostgreSQL and Redis in Compose while pointing the app at an external S3-compatible object store.
 - Mounting TLS certificates for IMAP STARTTLS and implicit TLS.
 - Running migrations before opening the service to clients.
 - Bootstrapping users and mail accounts with the admin CLI.
@@ -95,7 +95,7 @@ The important runtime settings include:
 - listener bind addresses for IMAP, HTTP, and metrics
 - `DATABASE_URL` for PostgreSQL
 - `REDIS_URL` for Redis fanout and coordination
-- `R2_*` values for Cloudflare R2
+- `R2_*` values for the external S3-compatible object store endpoint and credentials
 - `IMAP_TLS_CERT_PATH` and `IMAP_TLS_KEY_PATH` for TLS
 - `ENCRYPTION_MASTER_KEY` for secret handling
 

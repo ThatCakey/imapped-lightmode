@@ -5,12 +5,17 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: unless-stopped
-    entrypoint:
-      - /app/imap-cache-rs
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     env_file:
       - .env.production
     environment:
       APP_ENV: production
+      DATABASE_URL: postgres://imap_cache:imap_cache_password@postgres:5432/imap_cache
+      REDIS_URL: redis://redis:6379
       OBJECT_STORE_PATH: /app/data/blob
       SEARCH_INDEX_PATH: /app/data/search
       IMAP_TLS_CERT_PATH: /certs/imap.crt
@@ -25,5 +30,34 @@ services:
       # - "9090:9090" if METRICS_BIND is enabled
     command: ["run"]
 
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: imap_cache
+      POSTGRES_PASSWORD: imap_cache_password
+      POSTGRES_DB: imap_cache
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U imap_cache -d imap_cache"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - redis_data:/data
+
 volumes:
   imap-cache-data:
+  postgres_data:
+  redis_data:

@@ -7,10 +7,10 @@ The recommended production shape is:
 - one Docker container for `imap-cache-rs`
 - PostgreSQL as the canonical metadata store
 - Redis for pub/sub, coordination, and short-lived cache/workers
-- Cloudflare R2 for object storage
+- an external S3-compatible object store for raw message and MIME blobs
 - TLS certificates mounted into the container for IMAP STARTTLS and implicit TLS
 
-If you are using MinIO locally, treat that as a development or compatibility substitute, not as the production object store. The production target is Cloudflare R2.
+If you are using MinIO locally, treat that as a development or compatibility substitute, not as the production object store.
 
 ## Prerequisites
 
@@ -18,7 +18,7 @@ If you are using MinIO locally, treat that as a development or compatibility sub
 - Docker Compose v2
 - A PostgreSQL database reachable from the container
 - A Redis instance reachable from the container
-- A Cloudflare R2 bucket plus access keys
+- An external S3-compatible bucket plus access keys
 - A TLS certificate and private key for the IMAP endpoint
 - A random `ENCRYPTION_MASTER_KEY` with at least 32 bytes of entropy
 
@@ -45,10 +45,10 @@ At minimum, set:
 - `ENCRYPTION_MASTER_KEY=<random-secret>`
 - `DATABASE_URL=<production-postgres-url>`
 - `REDIS_URL=<production-redis-url>`
-- `R2_ENDPOINT=https://<account-id>.r2.cloudflarestorage.com`
+- `R2_ENDPOINT=https://<account-id>.r2.cloudflarestorage.com` or another S3-compatible endpoint
 - `R2_BUCKET=<bucket-name>`
-- `R2_ACCESS_KEY_ID=<r2-access-key>`
-- `R2_SECRET_ACCESS_KEY=<r2-secret-key>`
+- `R2_ACCESS_KEY_ID=<access-key>`
+- `R2_SECRET_ACCESS_KEY=<secret-key>`
 - `IMAP_TLS_CERT_PATH=/certs/imap.crt`
 - `IMAP_TLS_KEY_PATH=/certs/imap.key`
 - `OBJECT_STORE_PATH=/app/data/blob`
@@ -61,7 +61,7 @@ For production, you should also consider enabling:
 
 ## Example Compose File
 
-The repository includes [`docker-compose.prod.yml`](./docker-compose.prod.yml). It is intended to be used with the production environment file and mounted certificate directory.
+The repository includes [`docker-compose.prod.yml`](./docker-compose.prod.yml). It provisions PostgreSQL and Redis locally, while the object store remains external and S3-compatible.
 
 Start it with:
 
@@ -95,7 +95,7 @@ Notes:
 
 - The container listens on 1143 and 1993 internally by default. Port mapping exposes standard IMAP ports on the host.
 - The data volume holds the local object store cache and Tantivy index. Keep it persistent.
-- The compose file is intentionally small and expects PostgreSQL, Redis, and Cloudflare R2 to be provided externally.
+- The compose file is intentionally small and expects the S3-compatible object store to be provided externally.
 
 ## Build The Image
 
@@ -127,8 +127,8 @@ After startup, confirm:
 
 - the IMAP listeners are reachable on the mapped ports
 - PostgreSQL connectivity works
-- Redis connectivity works if configured
-- the object storage bucket exists and the credentials are correct
+- Redis connectivity works
+- the object storage endpoint, bucket, and credentials are correct
 
 ## Operational Notes
 
@@ -144,7 +144,7 @@ After startup, confirm:
 - `APP_ENV=production`
 - `DATABASE_URL` points to production PostgreSQL
 - `REDIS_URL` points to production Redis
-- R2 credentials are valid and the bucket exists
+- S3-compatible object store endpoint, bucket, and credentials are valid
 - TLS certificate and key are mounted read-only
 - persistent volume exists for local cache and search index data
 - migrations have been run successfully
